@@ -8,7 +8,7 @@ Some languages are not fully supported in Java. e.g., DateFormat, NumberFormat, 
 ----------------------------------------------------------------------------------------------------
 ## Usage:
 
-It is needed to store ext-locales-x.x.jar into the proper location.
+It is needed to store [ext-locales-x.x.jar](https://github.com/ikuuy/ext-locales/releases) into the proper location.
 
 For Tomcat 6 or later, the target location is $CATALINA_HOME/endorsed.  
 For Tomcat 5.x, the target location is $CATALINA_HOME/common/endorsed.  
