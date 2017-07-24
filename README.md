@@ -1,4 +1,4 @@
-# ext-locales
+# Extended Locales Library
 
 ## Project Purpose:
 
