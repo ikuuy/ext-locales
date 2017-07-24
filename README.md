@@ -31,7 +31,7 @@ new DecimalFormatSymbols(locale);
 ```
 in your code, because the latters do not support the extension.  
 
-2. Java 6 or later is required because the locale sensitive service provider has been introduced in Java 6.
+2. It works on Java 8. If you use Java 6 or 7, please manually build it with Maven.
 
 
 ----------------------------------------------------------------------------------------------------
