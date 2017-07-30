@@ -80,7 +80,7 @@ public class NumberFormatProviderImpl extends NumberFormatProvider {
 		format.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(locale));
 
 		String pattern = ExtLocalesUtil.getString(key, locale);
-		format.applyLocalizedPattern(pattern);
+		format.applyPattern(pattern);
 
 		return format;
 	}
