@@ -42,7 +42,7 @@ public class CollatorProviderImpl extends CollatorProvider {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 
-		RuleBasedCollator collator = (RuleBasedCollator) Collator.getInstance(Locale.ENGLISH);
+		RuleBasedCollator collator = (RuleBasedCollator) Collator.getInstance(Locale.ROOT);
 		String rules = collator.getRules() + ExtLocalesUtil.getString("CollatorRules", locale);
 
 		try {

@@ -208,7 +208,7 @@ public class CalendarNameProviderImpl extends CalendarNameProvider {
 			} else if ("japanese".equals(calendarType)) {
 				calendar = Calendar.getInstance(new Locale("ja", "JP", "JP"));
 			} else {
-				calendar = Calendar.getInstance(Locale.ENGLISH);
+				calendar = Calendar.getInstance(Locale.ROOT);
 			}
 			minimum = calendar.getMinimum(field);
 			maximum = calendar.getMaximum(field);

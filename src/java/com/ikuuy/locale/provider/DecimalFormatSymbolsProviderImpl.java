@@ -34,7 +34,7 @@ public class DecimalFormatSymbolsProviderImpl extends DecimalFormatSymbolsProvid
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 
-		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.ENGLISH);
+		DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.ROOT);
 		symbols.setDecimalSeparator(
 				ExtLocalesUtil.getChar("DecimalSeparator", locale));
 		symbols.setDigit(

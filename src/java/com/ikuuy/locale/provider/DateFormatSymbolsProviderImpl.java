@@ -34,7 +34,7 @@ public class DateFormatSymbolsProviderImpl extends DateFormatSymbolsProvider {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 
-		DateFormatSymbols symbols = DateFormatSymbols.getInstance(Locale.ENGLISH);
+		DateFormatSymbols symbols = DateFormatSymbols.getInstance(Locale.ROOT);
 		symbols.setEras(new String[] {
 				ExtLocalesUtil.getString("Eras.BC", locale),
 				ExtLocalesUtil.getString("Eras.AD", locale) });
