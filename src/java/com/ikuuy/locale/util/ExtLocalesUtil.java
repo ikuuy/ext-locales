@@ -10,6 +10,8 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * An utility class to get a value from the resource bundles.
@@ -166,6 +168,41 @@ public final class ExtLocalesUtil {
 	}
 
 	/**
+	 * Returns a string for the given <code>key</code> from the resource bundle.
+	 *
+	 * @param key the key for the desired string.
+	 * @param locale the desired locale.
+	 * @param substitute a flag whether substitution for <code>${key}</code> within
+	 *     the string is enabled.
+	 * @return the string for the given <code>key</code> and <code>locale</code>.
+	 */
+	public static String getString(final String key, final Locale locale, final boolean substitute) {
+		String value = null;
+
+		if (!substitute) {
+			value = getString(key, locale);
+		} else if (key != null) {
+			ResourceBundle bundle = getBundle(locale);
+			if (bundle != null) {
+				StringBuffer buf = new StringBuffer();
+				String srcValue = bundle.getString(key);
+
+				Pattern pattern = Pattern.compile("\\$\\{([^\\}]+)\\}");
+				Matcher matcher = pattern.matcher(srcValue);
+				while (matcher.find()) {
+					String subKey = matcher.group(1);
+					String replacement = bundle.getString(subKey);
+					matcher.appendReplacement(buf, Matcher.quoteReplacement(replacement));
+				}
+				matcher.appendTail(buf);
+				value = buf.toString();
+			}
+		}
+
+		return value;
+	}
+
+	/**
 	 * Returns a <code>char</code> value for the given <code>key</code> from the
 	 * resource bundle.
 	 *
@@ -225,6 +262,44 @@ public final class ExtLocalesUtil {
 			ResourceBundle bundle = getBundle(locale);
 			if (bundle != null) {
 				contain = bundle.containsKey(key);
+			}
+		}
+
+		return contain;
+	}
+
+	/**
+	 * Determines whether the given <code>key</code> is contained in the resource
+	 * bundle.
+	 *
+	 * @param key possible key.
+	 * @param locale the desired locale.
+	 * @param substitute a flag whether substitution for <code>${key}</code> within
+	 *     the string is enabled.
+	 * @return <code>true</code> if the given <code>key</code> and the keys to be
+	 *     substituted within the string are contained in the resource bundle;
+	 *     <code>false</code> otherwise.
+	 */
+	public static boolean containsKey(final String key, final Locale locale, final boolean substitute) {
+		boolean contain = false;
+
+		if (!substitute) {
+			contain = containsKey(key, locale);
+		} else if (key != null) {
+			ResourceBundle bundle = getBundle(locale);
+			if (bundle != null && bundle.containsKey(key)) {
+				contain = true;
+				String srcValue = bundle.getString(key);
+
+				Pattern pattern = Pattern.compile("\\$\\{([^\\}]+)\\}");
+				Matcher matcher = pattern.matcher(srcValue);
+				while (matcher.find()) {
+					String subKey = matcher.group(1);
+					if (!bundle.containsKey(subKey)) {
+						contain = false;
+						break;
+					}
+				}
 			}
 		}
 

@@ -53,8 +53,8 @@ public class TimeZoneNameProviderImpl extends TimeZoneNameProvider {
 			throw new IllegalArgumentException("style:" + style);
 		}
 
-		if (ExtLocalesUtil.containsKey(key.toString(), locale)) {
-			displayTimeZone = ExtLocalesUtil.getString(key.toString(), locale);
+		if (ExtLocalesUtil.containsKey(key.toString(), locale, true)) {
+			displayTimeZone = ExtLocalesUtil.getString(key.toString(), locale, true);
 		}
 
 		return displayTimeZone;
@@ -85,8 +85,8 @@ public class TimeZoneNameProviderImpl extends TimeZoneNameProvider {
 			throw new IllegalArgumentException("style:" + style);
 		}
 
-		if (ExtLocalesUtil.containsKey(key.toString(), locale)) {
-			displayTimeZone = ExtLocalesUtil.getString(key.toString(), locale);
+		if (ExtLocalesUtil.containsKey(key.toString(), locale, true)) {
+			displayTimeZone = ExtLocalesUtil.getString(key.toString(), locale, true);
 		}
 
 		return displayTimeZone;

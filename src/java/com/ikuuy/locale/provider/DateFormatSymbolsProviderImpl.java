@@ -91,20 +91,20 @@ public class DateFormatSymbolsProviderImpl extends DateFormatSymbolsProvider {
 		for (String[] values : zoneStrings) {
 			String zoneId = values[0];
 			String key = prefix + "." + zoneId + ".STANDARD.LONG";
-			if (ExtLocalesUtil.containsKey(key, locale)) {
-				values[1] = ExtLocalesUtil.getString(key, locale);
+			if (ExtLocalesUtil.containsKey(key, locale, true)) {
+				values[1] = ExtLocalesUtil.getString(key, locale, true);
 			}
 			key = prefix + "." + zoneId + ".STANDARD.SHORT";
-			if (ExtLocalesUtil.containsKey(key, locale)) {
-				values[2] = ExtLocalesUtil.getString(key, locale);
+			if (ExtLocalesUtil.containsKey(key, locale, true)) {
+				values[2] = ExtLocalesUtil.getString(key, locale, true);
 			}
 			key = prefix + "." + zoneId + ".DAYLIGHT.LONG";
-			if (ExtLocalesUtil.containsKey(key, locale)) {
-				values[3] = ExtLocalesUtil.getString(key, locale);
+			if (ExtLocalesUtil.containsKey(key, locale, true)) {
+				values[3] = ExtLocalesUtil.getString(key, locale, true);
 			}
 			key = prefix + "." + zoneId + ".DAYLIGHT.SHORT";
-			if (ExtLocalesUtil.containsKey(key, locale)) {
-				values[4] = ExtLocalesUtil.getString(key, locale);
+			if (ExtLocalesUtil.containsKey(key, locale, true)) {
+				values[4] = ExtLocalesUtil.getString(key, locale, true);
 			}
 		}
 		symbols.setZoneStrings(zoneStrings);
