@@ -1,6 +1,7 @@
 package com.ikuuy.locale.provider;
 
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.text.spi.DateFormatProvider;
 import java.util.Locale;
@@ -30,7 +31,14 @@ public class DateFormatProviderImpl extends DateFormatProvider {
 	@Override
 	public DateFormat getDateInstance(final int style, final Locale locale) throws IllegalArgumentException,
 			NullPointerException {
-		return new SimpleDateFormat(getDateFormatString(style, locale), locale);
+		DateFormat dateFormat = null;
+
+		String format = getDateTimeFormatString("DateFormat", style, locale);
+		if (format != null) {
+			dateFormat = new SimpleDateFormat(format, locale);
+		}
+
+		return dateFormat;
 	}
 
 	/**
@@ -39,8 +47,16 @@ public class DateFormatProviderImpl extends DateFormatProvider {
 	@Override
 	public DateFormat getDateTimeInstance(final int dateStyle, final int timeStyle, final Locale locale)
 			throws IllegalArgumentException, NullPointerException {
-		return new SimpleDateFormat(getDateFormatString(dateStyle, locale) + " "
-				+ getTimeFormatString(timeStyle, locale), locale);
+		DateFormat dateFormat = null;
+
+		String format = getDateTimeFormatString("DateTimeFormat", dateStyle, locale);
+		if (format != null) {
+			String pattern = MessageFormat.format(format, getDateTimeFormatString("DateFormat", dateStyle, locale),
+					getDateTimeFormatString("TimeFormat", timeStyle, locale));
+			dateFormat = new SimpleDateFormat(pattern, locale);
+		}
+
+		return dateFormat;
 	}
 
 	/**
@@ -51,7 +67,7 @@ public class DateFormatProviderImpl extends DateFormatProvider {
 			NullPointerException {
 		DateFormat dateFormat = null;
 
-		String format = getTimeFormatString(style, locale);
+		String format = getDateTimeFormatString("TimeFormat", style, locale);
 		if (format != null) {
 			dateFormat = new SimpleDateFormat(format, locale);
 		}
@@ -60,18 +76,19 @@ public class DateFormatProviderImpl extends DateFormatProvider {
 	}
 
 	/**
-	 * Returns a date pattern with the given formatting style for the specified
+	 * Returns a date/time pattern with the given formatting style for the specified
 	 * locale.
 	 *
-	 * @param style the given date formatting style.
+	 * @param prefix the prefix for the property key.
+	 * @param style the given date/time formatting style.
 	 * @param locale the desired locale.
-	 * @return a date pattern.
+	 * @return a date/time pattern.
 	 * @throws IllegalArgumentException if <code>style</code> is invalid, or if
 	 *     <code>locale</code> isn't available.
 	 * @throws NullPointerException if <code>locale</code> is <code>null</code>.
 	 */
-	protected String getDateFormatString(final int style, final Locale locale) throws IllegalArgumentException,
-			NullPointerException {
+	protected String getDateTimeFormatString(final String prefix, final int style, final Locale locale)
+			throws IllegalArgumentException, NullPointerException {
 		if (locale == null) {
 			throw new NullPointerException("locale:null");
 		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
@@ -81,56 +98,16 @@ public class DateFormatProviderImpl extends DateFormatProvider {
 		String key;
 		switch (style) {
 		case DateFormat.SHORT:
-			key = "DateFormat.SHORT";
+			key = prefix + ".SHORT";
 			break;
 		case DateFormat.MEDIUM:
-			key = "DateFormat.MEDIUM";
+			key = prefix + ".MEDIUM";
 			break;
 		case DateFormat.LONG:
-			key = "DateFormat.LONG";
+			key = prefix + ".LONG";
 			break;
 		case DateFormat.FULL:
-			key = "DateFormat.FULL";
-			break;
-		default:
-			throw new IllegalArgumentException("style:" + style);
-		}
-
-		return ExtLocalesUtil.getString(key, locale);
-	}
-
-	/**
-	 * Returns a time pattern with the given formatting style for the specified
-	 * locale.
-	 *
-	 * @param style the given time formatting style.
-	 * @param locale the desired locale.
-	 * @return a time pattern.
-	 * @throws IllegalArgumentException if <code>style</code> is invalid, or if
-	 *     <code>locale</code> isn't available.
-	 * @throws NullPointerException if <code>locale</code> is <code>null</code>.
-	 */
-	protected String getTimeFormatString(final int style, final Locale locale) throws IllegalArgumentException,
-			NullPointerException {
-		if (locale == null) {
-			throw new NullPointerException("locale:null");
-		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
-			throw new IllegalArgumentException("locale:" + locale.toString());
-		}
-
-		String key;
-		switch (style) {
-		case DateFormat.SHORT:
-			key = "TimeFormat.SHORT";
-			break;
-		case DateFormat.MEDIUM:
-			key = "TimeFormat.MEDIUM";
-			break;
-		case DateFormat.LONG:
-			key = "TimeFormat.LONG";
-			break;
-		case DateFormat.FULL:
-			key = "TimeFormat.FULL";
+			key = prefix + ".FULL";
 			break;
 		default:
 			throw new IllegalArgumentException("style:" + style);
