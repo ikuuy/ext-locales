@@ -19,7 +19,11 @@ public class LocaleNameProviderImpl extends LocaleNameProvider {
 	 */
 	@Override
 	public Locale[] getAvailableLocales() {
-		return ExtLocalesUtil.getAvailableLocales();
+		Locale[] locales = ExtLocalesUtil.getAvailableLocales();
+		Locale[] availableLocales = new Locale[locales.length + 1];
+		availableLocales[0] = Locale.ROOT;
+		System.arraycopy(locales, 0, availableLocales, 1, locales.length);
+		return availableLocales;
 	}
 
 	/**
