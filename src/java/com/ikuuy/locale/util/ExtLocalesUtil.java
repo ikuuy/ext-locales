@@ -31,6 +31,11 @@ public final class ExtLocalesUtil {
 	 */
 	private static final Set<Locale> LOCALES = new HashSet<Locale>();
 
+	/**
+	 * A compiled representation of a regular expression for substitution.
+	 */
+	private static final Pattern SUBST_PATTERN = Pattern.compile("\\$\\{([^\\}]+)\\}");
+
 	private ExtLocalesUtil() {
 	}
 
@@ -153,8 +158,9 @@ public final class ExtLocalesUtil {
 	 * @param key the key for the desired string.
 	 * @param locale the desired locale.
 	 * @return the string for the given <code>key</code> and <code>locale</code>.
+     * @throws MissingResourceException if no object for the given key can be found.
 	 */
-	public static String getString(final String key, final Locale locale) {
+	public static String getString(final String key, final Locale locale) throws MissingResourceException {
 		String value = null;
 
 		if (key != null) {
@@ -175,8 +181,11 @@ public final class ExtLocalesUtil {
 	 * @param substitute a flag whether substitution for <code>${key}</code> within
 	 *     the string is enabled.
 	 * @return the string for the given <code>key</code> and <code>locale</code>.
+	 * @throws MissingResourceException if no object for the given <code>key</code> or
+	 *     any key to be substituted can be found.
 	 */
-	public static String getString(final String key, final Locale locale, final boolean substitute) {
+	public static String getString(final String key, final Locale locale, final boolean substitute)
+			throws MissingResourceException {
 		String value = null;
 
 		if (!substitute) {
@@ -186,9 +195,7 @@ public final class ExtLocalesUtil {
 			if (bundle != null) {
 				StringBuffer buf = new StringBuffer();
 				String srcValue = bundle.getString(key);
-
-				Pattern pattern = Pattern.compile("\\$\\{([^\\}]+)\\}");
-				Matcher matcher = pattern.matcher(srcValue);
+				Matcher matcher = SUBST_PATTERN.matcher(srcValue);
 				while (matcher.find()) {
 					String subKey = matcher.group(1);
 					String replacement = bundle.getString(subKey);
@@ -210,8 +217,9 @@ public final class ExtLocalesUtil {
 	 * @param locale the desired locale.
 	 * @return the <code>char</code> value for the given <code>key</code> and
 	 *     <code>locale</code>.
+     * @throws MissingResourceException if no object for the given key can be found.
 	 */
-	public static char getChar(final String key, final Locale locale) {
+	public static char getChar(final String key, final Locale locale) throws MissingResourceException {
 		char value = 0;
 
 		String str = getString(key, locale);
@@ -230,8 +238,9 @@ public final class ExtLocalesUtil {
 	 * @param locale the desired locale.
 	 * @return the <code>int</code> value for the given <code>key</code> and
 	 *     <code>locale</code>.
+     * @throws MissingResourceException if no object for the given key can be found.
 	 */
-	public static int getInt(final String key, final Locale locale) {
+	public static int getInt(final String key, final Locale locale) throws MissingResourceException {
 		int value = 0;
 
 		String str = getString(key, locale);
@@ -290,9 +299,7 @@ public final class ExtLocalesUtil {
 			if (bundle != null && bundle.containsKey(key)) {
 				contain = true;
 				String srcValue = bundle.getString(key);
-
-				Pattern pattern = Pattern.compile("\\$\\{([^\\}]+)\\}");
-				Matcher matcher = pattern.matcher(srcValue);
+				Matcher matcher = SUBST_PATTERN.matcher(srcValue);
 				while (matcher.find()) {
 					String subKey = matcher.group(1);
 					if (!bundle.containsKey(subKey)) {
