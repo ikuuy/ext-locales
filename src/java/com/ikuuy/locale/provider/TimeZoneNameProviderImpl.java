@@ -20,7 +20,7 @@ public class TimeZoneNameProviderImpl extends TimeZoneNameProvider {
 	 */
 	@Override
 	public Locale[] getAvailableLocales() {
-		return ExtLocalesUtil.getAvailableLocales();
+		return ExtLocalesUtil.getAvailableTimeZoneNameLocales();
 	}
 
 	/**

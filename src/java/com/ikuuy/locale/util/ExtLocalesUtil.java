@@ -32,6 +32,11 @@ public final class ExtLocalesUtil {
 	private static final Set<Locale> LOCALES = new HashSet<Locale>();
 
 	/**
+	 * A set of all locales for the resource bundles which contain time zone names.
+	 */
+	private static final Set<Locale> TZ_NAME_LOCALES = new HashSet<Locale>();
+
+	/**
 	 * A compiled representation of a regular expression for substitution.
 	 */
 	private static final Pattern SUBST_PATTERN = Pattern.compile("\\$\\{([^\\}]+)\\}");
@@ -58,8 +63,19 @@ public final class ExtLocalesUtil {
 				}
 			}
 		}
+		initAvailableLocales(props, "locales", LOCALES);
+		initAvailableLocales(props, "TimeZoneName.locales", TZ_NAME_LOCALES);
+	}
 
-		String value = props.getProperty("locales");
+	/**
+	 * Initialize the set of all locales for the resource bundles.
+	 *
+	 * @param props a property list from the locale config.
+	 * @param key the key for the desired set of locales.
+	 * @param localeSet the desired set of locales.
+	 */
+	private static void initAvailableLocales(final Properties props, final String key, final Set<Locale> localeSet) {
+		String value = props.getProperty(key);
 		if (value != null) {
 			Locale.Builder builder = new Locale.Builder();
 			String[] locales = value.split(",");
@@ -95,7 +111,7 @@ public final class ExtLocalesUtil {
 				}
 
 				if (afterSharp == null) {
-					LOCALES.add(locale);
+					localeSet.add(locale);
 				} else {
 					String script = null;
 					String extension = null;
@@ -119,7 +135,7 @@ public final class ExtLocalesUtil {
 					if (extension != null && extension.matches("^[0-9a-zA-Z]-.+")) {
 						builder.setExtension(extension.charAt(0), extension.substring(2));
 					}
-					LOCALES.add(builder.build());
+					localeSet.add(builder.build());
 				}
 			}
 		}
@@ -132,6 +148,16 @@ public final class ExtLocalesUtil {
 	 */
 	public static Locale[] getAvailableLocales() {
 		return LOCALES.toArray(new Locale[LOCALES.size()]);
+	}
+
+	/**
+	 * Returns an array of all locales for the resource bundles which contain time
+	 * zone names.
+	 *
+	 * @return an array of locales.
+	 */
+	public static Locale[] getAvailableTimeZoneNameLocales() {
+		return TZ_NAME_LOCALES.toArray(new Locale[TZ_NAME_LOCALES.size()]);
 	}
 
 	/**
