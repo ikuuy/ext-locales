@@ -72,7 +72,7 @@ public class NumberFormatProviderImpl extends NumberFormatProvider {
 			NullPointerException {
 		if (locale == null) {
 			throw new NullPointerException("locale:null");
-		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
+		} else if (!ExtLocalesUtil.isAvailableLocale(locale, getAvailableLocales())) {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 

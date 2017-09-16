@@ -2,12 +2,15 @@ package com.ikuuy.locale.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.ResourceBundle.Control;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -161,18 +164,24 @@ public final class ExtLocalesUtil {
 	}
 
 	/**
-	 * Determines whether the given <code>locale</code> is available
-	 * for the resource bundles.
+	 * Determines whether the given <code>locale</code> is one of the
+	 * <code>availableLocales<code>.
 	 *
 	 * @param locale possible locale.
-	 * @return <code>true</code> if the given <code>locale</code> is available for the
-	 *     resource bundles; <code>false</code> otherwise.
+	 * @param availableLocales an array of all available locales.
+	 * @return <code>true</code> if the given <code>locale</code> is one of the
+	 *     <code>availableLocales<code>; <code>false</code> otherwise.
 	 */
-	public static boolean isAvailableLocale(final Locale locale) {
+	public static boolean isAvailableLocale(final Locale locale, final Locale... availableLocales) {
 		boolean isAvailable = false;
 
-		if (getBundle(locale) != null) {
-			isAvailable = true;
+		Control control = Control.getNoFallbackControl(Control.FORMAT_DEFAULT);
+		List<Locale> candidateLocales = control.getCandidateLocales("", locale);
+		for (Locale targetLocale : candidateLocales) {
+			if (Arrays.asList(availableLocales).contains(targetLocale)) {
+				isAvailable = true;
+				break;
+			}
 		}
 
 		return isAvailable;

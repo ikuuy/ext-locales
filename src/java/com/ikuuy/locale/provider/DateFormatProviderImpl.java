@@ -91,7 +91,7 @@ public class DateFormatProviderImpl extends DateFormatProvider {
 			throws IllegalArgumentException, NullPointerException {
 		if (locale == null) {
 			throw new NullPointerException("locale:null");
-		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
+		} else if (!ExtLocalesUtil.isAvailableLocale(locale, getAvailableLocales())) {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 

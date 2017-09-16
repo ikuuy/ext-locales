@@ -1,5 +1,6 @@
 package com.ikuuy.locale.provider;
 
+import java.util.Currency;
 import java.util.Locale;
 import java.util.spi.CurrencyNameProvider;
 
@@ -35,7 +36,7 @@ public class CurrencyNameProviderImpl extends CurrencyNameProvider {
 			throw new IllegalArgumentException("currencyCode:" + currencyCode);
 		} else if (locale == null) {
 			throw new NullPointerException("locale:null");
-		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
+		} else if (!ExtLocalesUtil.isAvailableLocale(locale, getAvailableLocales())) {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 

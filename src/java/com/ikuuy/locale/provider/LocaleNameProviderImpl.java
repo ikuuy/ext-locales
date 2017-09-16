@@ -40,7 +40,7 @@ public class LocaleNameProviderImpl extends LocaleNameProvider {
 			throw new IllegalArgumentException("countryCode:" + countryCode);
 		} else if (locale == null) {
 			throw new NullPointerException("locale:null");
-		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
+		} else if (!ExtLocalesUtil.isAvailableLocale(locale, getAvailableLocales())) {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 
@@ -68,7 +68,7 @@ public class LocaleNameProviderImpl extends LocaleNameProvider {
 			throw new IllegalArgumentException("languageCode:" + languageCode);
 		} else if (locale == null) {
 			throw new NullPointerException("locale:null");
-		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
+		} else if (!ExtLocalesUtil.isAvailableLocale(locale, getAvailableLocales())) {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 
@@ -95,7 +95,7 @@ public class LocaleNameProviderImpl extends LocaleNameProvider {
 			throw new IllegalArgumentException("scriptCode:" + scriptCode);
 		} else if (locale == null) {
 			throw new NullPointerException("locale:null");
-		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
+		} else if (!ExtLocalesUtil.isAvailableLocale(locale, getAvailableLocales())) {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 
@@ -119,7 +119,7 @@ public class LocaleNameProviderImpl extends LocaleNameProvider {
 			throw new NullPointerException("variant:null");
 		} else if (locale == null) {
 			throw new NullPointerException("locale:null");
-		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
+		} else if (!ExtLocalesUtil.isAvailableLocale(locale, getAvailableLocales())) {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 

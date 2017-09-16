@@ -30,7 +30,7 @@ public class DateFormatSymbolsProviderImpl extends DateFormatSymbolsProvider {
 	public DateFormatSymbols getInstance(final Locale locale) throws IllegalArgumentException, NullPointerException {
 		if (locale == null) {
 			throw new NullPointerException("locale:null");
-		} else if (!ExtLocalesUtil.isAvailableLocale(locale)) {
+		} else if (!ExtLocalesUtil.isAvailableLocale(locale, getAvailableLocales())) {
 			throw new IllegalArgumentException("locale:" + locale.toString());
 		}
 
@@ -86,28 +86,30 @@ public class DateFormatSymbolsProviderImpl extends DateFormatSymbolsProvider {
 		symbols.setLocalPatternChars(ExtLocalesUtil.getString(
 				"LocalPatternChars", locale));
 
-		String prefix = "ZoneStrings";
-		String[][] zoneStrings = symbols.getZoneStrings();
-		for (String[] values : zoneStrings) {
-			String zoneId = values[0];
-			String key = prefix + "." + zoneId + ".STANDARD.LONG";
-			if (ExtLocalesUtil.containsKey(key, locale, true)) {
-				values[1] = ExtLocalesUtil.getString(key, locale, true);
+		if (ExtLocalesUtil.isAvailableLocale(locale, ExtLocalesUtil.getAvailableTimeZoneNameLocales())) {
+			String prefix = "ZoneStrings";
+			String[][] zoneStrings = symbols.getZoneStrings();
+			for (String[] values : zoneStrings) {
+				String zoneId = values[0];
+				String key = prefix + "." + zoneId + ".STANDARD.LONG";
+				if (ExtLocalesUtil.containsKey(key, locale, true)) {
+					values[1] = ExtLocalesUtil.getString(key, locale, true);
+				}
+				key = prefix + "." + zoneId + ".STANDARD.SHORT";
+				if (ExtLocalesUtil.containsKey(key, locale, true)) {
+					values[2] = ExtLocalesUtil.getString(key, locale, true);
+				}
+				key = prefix + "." + zoneId + ".DAYLIGHT.LONG";
+				if (ExtLocalesUtil.containsKey(key, locale, true)) {
+					values[3] = ExtLocalesUtil.getString(key, locale, true);
+				}
+				key = prefix + "." + zoneId + ".DAYLIGHT.SHORT";
+				if (ExtLocalesUtil.containsKey(key, locale, true)) {
+					values[4] = ExtLocalesUtil.getString(key, locale, true);
+				}
 			}
-			key = prefix + "." + zoneId + ".STANDARD.SHORT";
-			if (ExtLocalesUtil.containsKey(key, locale, true)) {
-				values[2] = ExtLocalesUtil.getString(key, locale, true);
-			}
-			key = prefix + "." + zoneId + ".DAYLIGHT.LONG";
-			if (ExtLocalesUtil.containsKey(key, locale, true)) {
-				values[3] = ExtLocalesUtil.getString(key, locale, true);
-			}
-			key = prefix + "." + zoneId + ".DAYLIGHT.SHORT";
-			if (ExtLocalesUtil.containsKey(key, locale, true)) {
-				values[4] = ExtLocalesUtil.getString(key, locale, true);
-			}
+			symbols.setZoneStrings(zoneStrings);
 		}
-		symbols.setZoneStrings(zoneStrings);
 
 		return symbols;
 	}
