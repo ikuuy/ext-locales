@@ -27,6 +27,33 @@ public class CurrencyNameProviderImpl extends CurrencyNameProvider {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public String getDisplayName(final String currencyCode, final Locale locale) throws IllegalArgumentException,
+			NullPointerException {
+		if (currencyCode == null) {
+			throw new NullPointerException("currencyCode:null");
+		} else if (!currencyCode.matches("^[A-Z]{3}$")) {
+			// The currency code string should be in the form of three upper-case letters.
+			throw new IllegalArgumentException("currencyCode:" + currencyCode);
+		} else if (locale == null) {
+			throw new NullPointerException("locale:null");
+		} else if (!ExtLocalesUtil.isAvailableLocale(locale, getAvailableLocales())) {
+			throw new IllegalArgumentException("locale:" + locale.toString());
+		}
+
+		String displayName = null;
+		String key = "Currency." + currencyCode + ".Name";
+
+		if (ExtLocalesUtil.containsKey(key, locale)) {
+			displayName = ExtLocalesUtil.getString(key, locale);
+		}
+
+		return displayName;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String getSymbol(final String currencyCode, final Locale locale) throws IllegalArgumentException,
 			NullPointerException {
 		if (currencyCode == null) {
